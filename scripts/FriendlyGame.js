@@ -30,7 +30,7 @@ FriendlyGame.prototype.initRouter = function() {
   this.router
     .on({
       '/': function() {
-        that.updateQuery(that.filters);
+        that.setupLogin();
       }
     })
     .on({

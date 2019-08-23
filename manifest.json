@@ -1,6 +1,6 @@
 {
-  "name": "FriendlyEats",
-  "short_name": "FriendlyEats",
+  "name": "FriendlyGame",
+  "short_name": "FriendlyGame",
   "start_url": "/",
   "display": "standalone",
   "orientation": "portrait",

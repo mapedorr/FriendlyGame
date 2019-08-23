@@ -5,3 +5,7 @@ body {
   padding: 0px;
   background-color: #f1f2da;
 }
+
+.hidden {
+  display: none;
+}

@@ -5,18 +5,28 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>FriendlyGame</title>
+  <link rel="stylesheet" href="/styles/main.css">
 </head>
 <body>
 <div>
-  <div id="login">
-    <label for="playerName">Nombre:</label>
-    <input id="playerName" type="text">
-    <label for="playerId">C.C.:</label>
-    <input id="playerId" type="number">
+  <div class="" id="login">
+    <label for="player-name">Nombre:</label>
+    <input id="player-name" type="text">
+    <label for="player-id">C.C.:</label>
+    <input id="player-id" type="text">
     <button id="init-test" type="button">Iniciar prueba</button>
   </div>
-  <div hidden id="ui"></div>
-  <div hidden id="results"></div>
+
+  <div class="hidden" id="gui">
+    <h1 id='question'></h1>
+    <button id="op-a" type="button">A</button>
+    <button id="op-b" type="button">B</button>
+    <button id="op-c" type="button">C</button>
+    <button id="op-d" type="button">D</button>
+    <button disabled id="next" type="button">Siguiente</button>
+  </div>
+
+  <div class="hidden" id="results"></div>
 </div>
 
 <!-- import Firebase and router scripts -->
@@ -27,5 +37,6 @@
 <script src="//unpkg.com/navigo@6"></script>
 <!-- import project's scripts -->
 <script src="/scripts/FriendlyGame.js"></script>
+<script src="/scripts/FriendlyGame.View.js"></script>
 </body>
 </html>
