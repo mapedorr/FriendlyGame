@@ -7,8 +7,10 @@ function FriendlyGame() { // eslint-disable-line no-redeclare
   this.filters = {
     sort: 'id'
   };
+  this.uid = null;
+  this.score = 0;
 
-  firebase.firestore().enablePersistence()
+  firebase.firestore().clearPersistence()
     .then(function() {
       return firebase.auth().signInAnonymously();
     })
@@ -35,12 +37,16 @@ FriendlyGame.prototype.initRouter = function() {
     })
     .on({
       '/prueba': function() {
-        // TODO: render the test
+        if (!that.uid) {
+          that.router.navigate('/');
+          return;
+        }
+        that.setupGame();
       }
     })
     .on({
       '/resultados': function() {
-        // TODO: render the test results
+        that.showResults();
       }
     })
     .resolve();

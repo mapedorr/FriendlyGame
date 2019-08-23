@@ -9,3 +9,12 @@ body {
 .hidden {
   display: none;
 }
+
+.option {
+  background: #ffce96;
+  border: none;
+}
+
+.option.selected {
+  background: #ff7777;
+}
