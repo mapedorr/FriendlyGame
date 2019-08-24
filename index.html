@@ -4,55 +4,90 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>FriendlyGame</title>
+  <title>Juego Fundación santa Fe de Bogotá</title>
   <link rel="stylesheet" href="./styles/main.css">
+
+
+
+    <link href="http://www.jqueryscript.net/css/jquerysctipttop.css" rel="stylesheet" type="text/css">
+    <script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+    <script src="scripts/digitalKeyboard.js"></script>
+
+
+
 </head>
 <body>
-<div>
   <div class="hidden" id="login">
+<div class="trivia-titulo"></div>
+<div class="contenedor-login">
+  <p><center>Ingresa tu código</center></p>
+  <hr>
     <div class="login-user" id="user-1">
-      <label class="login-label">Nombre j1:</label>
-      <input class="login-input" type="text">
-      <label class="login-label">C.C. j1:</label>
-      <input class="login-input" type="text">
+      
+      <!--<p>
+        <label class="login-label">Nombre j1:</label>
+        <input class="login-input" type="text">
+      </p>-->
+      <p>
+        <input class="login-input" type="number" id="numkey01">
+      </p>
     </div>
 
     <div class="login-user" id="user-2">
+      <!--<p>
       <label class="login-label">Nombre j2:</label>
       <input class="login-input" type="text">
-      <label class="login-label">C.C. j2:</label>
-      <input class="login-input" type="text">
+      </p>-->
+      <p>
+      <input class="login-input" type="number" id="numkey02">
+      </p>
     </div>
 
     <div class="login-user" id="user-3">
-      <label class="login-label">Nombre j3:</label>
-      <input class="login-input" type="text">
-      <label class="login-label">C.C. j3:</label>
-      <input class="login-input" type="text">
+     <!-- <p>
+        <label class="login-label">Nombre j3:</label>
+        <input class="login-input" type="text">
+      </p> -->
+      <p>
+        <input class="login-input" type="number" id="numkey03">
+      </p>
     </div>
 
     <div class="login-user" id="user-4">
-      <label class="login-label">Nombre j4:</label>
-      <input class="login-input" type="text">
-      <label class="login-label">C.C. j4:</label>
-      <input class="login-input" type="text">
+      <!--<p>
+        <label class="login-label">Nombre j4:</label>
+        <input class="login-input" type="text">
+      </p>-->
+      <p>
+        <input class="login-input" type="number" id="numkey04">
+      </p>
     </div>
 
-    <button id="init-test" type="button">Iniciar prueba</button>
+   <center> <button id="init-test" type="button">Iniciar prueba</button></center>
+
+</div>
   </div>
 
   <div class="hidden" id="gui">
-    <h1 id='question'></h1>
-    <button class="option" id="op-a" type="button"></button>
-    <button class="option" id="op-b" type="button"></button>
-    <button class="option" id="op-c" type="button"></button>
-    <button class="option" id="op-d" type="button"></button>
-    <button disabled id="next" type="button">Siguiente</button>
+    <div class="contenedor-pregunta">
+      <div style="flex: 1">
+        <h1 id='question'></h1>
+      </div>
+        
+      <div  style="flex: 1">
+        <button class="option" id="op-a" type="button"></button>
+        <button class="option" id="op-b" type="button"></button>
+        <button class="option" id="op-c" type="button"></button>
+        <button class="option" id="op-d" type="button"></button>
+        <button disabled id="next" type="button">Siguiente</button>
+      </div>
+    </div>
   </div>
 
-  <div class="hidden" id="score">
+  <div class="hidden" id="score"><center>
     <h1>Gracias por presentar la prueba</h1>
-    <h3>Resultado:<span id="score_value"></span></h3>
+    <h3>Respondiste:<span id="score_value"></span> de 5 preguntas correctamente</h3>
+    </center>
   </div>
 
   <div class="hidden" id="results">
@@ -60,7 +95,6 @@
     <ul id="results-list">
     </ul>
   </div>
-</div>
 
 <!-- import Firebase and router scripts -->
 <script src="/__/firebase/6.4.0/firebase-app.js"></script>
@@ -69,9 +103,31 @@
 <script src="/__/firebase/init.js"></script>
 <script src="//unpkg.com/navigo@6"></script>
 <!-- import project's scripts -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/2.1.3/utils/Draggable.min.js"></script>
 <script src="/scripts/FriendlyGame.js"></script>
 <script src="/scripts/FriendlyGame.Data.js"></script>
 <script src="/scripts/FriendlyGame.View.js"></script>
+
+
+<script type="text/javascript">
+    $("#numkey01").numKey({
+        limit: 12,
+        /*disorder: true*/
+    });
+    $("#numkey02").numKey({
+        limit: 12,
+        /*disorder: true*/
+    });
+    $("#numkey03").numKey({
+        limit: 12,
+        /*disorder: true*/
+    });
+    $("#numkey04").numKey({
+        limit: 12,
+        /*disorder: true*/
+    });
+</script>
+
 
 </body>
 </html>

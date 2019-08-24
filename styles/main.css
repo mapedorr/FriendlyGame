@@ -1,9 +1,17 @@
+@import url('https://fonts.googleapis.com/css?family=Lato:300,400,900&display=swap');
+
+html{
+  height: 100%;
+}
+
+body{height: 100%;}
+
 html,
 body {
-  font-family: 'Roboto', 'Helvetica', sans-serif;
+  font-family: 'Lato', sans-serif;
   margin: 0px;
   padding: 0px;
-  background-color: #f1f2da;
+  font-size: 1.4em;
 }
 
 .hidden {
@@ -11,13 +19,125 @@ body {
 }
 
 .option {
-  background: #ffce96;
-  border: none;
+  background: rgba(0,0,0, 0.7);
+  border: 1px solid white;
   width: 100%;
-  height: 32px;
   margin: 10px;
+
 }
 
 .option.selected {
   background: #ff7777;
+}
+
+#login{
+  background:url(../imgs/bg-login.jpg);
+  background-size: cover;
+  height: 100%;
+}
+
+.trivia-titulo{
+  background:url(../imgs/trivia-titulo.png);
+  background-size: cover;
+  height: 100%;
+  width: 100%;
+  position: absolute;
+}
+
+.contenedor-login{
+    font-weight: 300;
+     position: absolute;
+     top: 50%;
+     right: 0px;
+     transform: perspective(1px) translateY(-50%);
+     padding: 50px;
+     border-radius: 20px;
+     border: 1px solid white;
+     color: white;
+     margin-right: 40px;
+}
+
+.contenedor-login p{
+  margin: 0px;
+}
+
+button{
+  font-family: 'Lato', sans-serif;
+  font-weight: 300;
+  font-size: 1em;
+  color: white;
+  border-radius: 100px;
+  border:3px solid rgba(161, 210, 63, 0.4);
+  padding: 10px 30px;
+
+
+
+background: rgba(161,210,63,1);
+background: -moz-linear-gradient(top, rgba(161,210,63,1) 0%, rgba(89,140,0,1) 100%);
+background: -webkit-gradient(left top, left bottom, color-stop(0%, rgba(161,210,63,1)), color-stop(100%, rgba(89,140,0,1)));
+background: -webkit-linear-gradient(top, rgba(161,210,63,1) 0%, rgba(89,140,0,1) 100%);
+background: -o-linear-gradient(top, rgba(161,210,63,1) 0%, rgba(89,140,0,1) 100%);
+background: -ms-linear-gradient(top, rgba(161,210,63,1) 0%, rgba(89,140,0,1) 100%);
+background: linear-gradient(to bottom, rgba(161,210,63,1) 0%, rgba(89,140,0,1) 100%);
+filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#a1d23f', endColorstr='#598c00', GradientType=0 );
+
+margin:35px 0px 0px 0px;
+
+
+}
+
+
+hr{border:1px solid white !important;}
+
+.login-input{
+  font-family: 'Lato', sans-serif;
+  font-weight: 300;
+  width: 100%;
+  border-radius: 10px;
+  border:none !important;
+  padding: 2px;
+  font-size: 1.3em;
+  margin: 5px 0px;
+}
+
+.fuzy-numKey{
+  width: 50% !important;
+  border-radius: 30px;
+  background-color:  rgba(37,55,134, 0.9) !important;
+}
+
+.fuzy-numKey div{
+  background-color:  rgba(1,21,76, 1) !important;
+
+}
+
+.fuzy-numKey-lightgray{
+
+  background-color: rgba(112, 196, 238, 1) !important;
+}
+
+#gui{
+  background:url(../imgs/bg-preguntas.jpg);
+  background-size: cover;
+  height: 100%;
+  width: 100%;
+  position: absolute;
+}
+
+.contenedor-pregunta {
+  width: 96%;
+  position: absolute;
+    font-weight: 300;
+     position: absolute;
+     top: 50%;
+     transform: perspective(1px) translateY(-50%);
+     color: white;
+     margin: 2%;
+     display: flex;
+}
+
+
+
+.contenedor-pregunta h1{
+  color: #00154A;
 }

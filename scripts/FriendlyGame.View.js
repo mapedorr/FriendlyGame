@@ -12,7 +12,7 @@ FriendlyGame.prototype.setupLogin = function() {
   document.querySelectorAll('.login-user').forEach(function (el) {
     var inputs = el.querySelectorAll('.login-input');
     inputs[0].value = '';
-    inputs[1].value = '';
+    /*inputs[1].value = '';*/
   });
 
   // se asigna el escuchador del clic para el botón que da inicio a la prueba
@@ -25,28 +25,36 @@ FriendlyGame.prototype.setupLogin = function() {
     // los datos de cada jugador
     document.querySelectorAll('.login-user').forEach(function (el) {
       var inputs = el.querySelectorAll('.login-input');
-      if (inputs[0].value && inputs[1].value) {
+      if (inputs[0].value /*&& inputs[1].value*/) {
         that.team.push({
-          name: inputs[0].value,
-          cc: inputs[1].value
+          // name: inputs[0].value,
+          cc: inputs[0].value
         });
       }
     });
 
     // se verifica que cada jugador haya puesto su nombre y un número de cédula
     that.team.forEach(function (member) {
-      if (member.name || member.cc) {
-        if (!member.name || !member.cc) {
+      if (/*member.name ||*/ member.cc) {
+        if (/*!member.name ||*/ !member.cc) {
           incomplete_form = true;
         }
       }
     });
 
+    if (that.team.length === 0) {
+      alert('Por favor rellena al menos un campo de texto');
+      return;
+    }
+
     // si alguno de los campos está incompleto, se muestra esta mierda
+
+    /*
     if (incomplete_form) {
       alert('Cada jugador tiene que ingresar nombre y C.C. para poder continuar con la prueba');
       return;
     }
+    */
 
     // se verifica que en el campo cédula hayan metido números y que sean de
     // 7 a 10 dígitos
@@ -54,16 +62,18 @@ FriendlyGame.prototype.setupLogin = function() {
       var int_val = parseInt(member.cc);
       if (isNaN(int_val)) {
         wrong_cc = true;
-      } else if (('' + int_val).length < 7 || ('' + int_val).length > 10) {
+      } else if (('' + int_val).length < 1 || ('' + int_val).length > 100) {
         wrong_cc = true;
       }
     });
 
     // si alguna cédula está mal, se muestra esta mierda
+    /*
     if (wrong_cc) {
       alert('Hay un número de C.C. incorrecto');
       return;
     }
+    */
 
     // se llama al método que va a verificar que cada cédula se cree en la
     // base de datos
@@ -114,32 +124,49 @@ FriendlyGame.prototype.setupGame = function() {
   var currentQuestion = 0;
   var questions = [
     {
-      text: '¿Qué le dijo un perro a una paloma?',
+      text: '01. Nuestra misión',
       options: [
-        'Hola', // 0
-        'Chao', // 1
-        'Te voy a comer paloma', // 2
-        'Soy un perro. ¿Y tú?' // 3
+        'Liderar e influir positivamente en el sector salud para contribuir al bienestar de individuos y comunidades. (correcta)', // 0
+        'Ser una organización que sirve a pacientes y estudiantes.', // 1
+        'Más y mejor salud.', // 2
+      ],
+      answer: 1
+    },
+    {
+      text: '2. Visión: Al ____ la Fundación Santa Fe de Bogotá habrá generado más y mejor salud para Colombia y la región.',
+      options: [
+        '2025', // 0
+        '2040', // 1
+        '2050 (correcta)' // 2
+      ],
+      answer: 3
+    },
+    {
+      text: '03. MÁS y MEJOR salud para Colombia y la región, es nuestra:',
+      options: [
+        'Visión', // 0
+        'Mega Institucional (correcta)', // 1
+        'Filosofía de servicio' // 2
       ],
       answer: 2
     },
     {
-      text: '¿Cuánto es 2 + 2?',
+      text: '4.Cuál de las siguientes opciones NO contribuye a cumplir con nuestra mega institucional:',
       options: [
-        '4', // 0
-        '2', // 1
-        '5', // 2
-        '0'  // 3
+        'La entrega sistemática de desenlaces superiores, superando los más exi­gentes estándares internacionales en la atención y el cuidado continuo de la persona, su familia y cuidadores. ', // 0
+        'El desarrollo de nuevos medicamentos para la población.', // 1
+        'El alto nivel científico de su práctica reflejada en investigaciones de im­pacto divulgadas a través de publi­caciones en revistas indexadas.', // 2
+        'La educación de profesionales de la salud que contribuyen con resulta­dos sobresalientes a mejorar la sa­lud y los servicios de atención en la FSFB, el país y la región.'
       ],
-      answer: 0
+      answer: 2
     },
     {
-      text: '¿Cuál es la mejor pizza del mundo?',
+      text: '5.Cuál de las siguientes opciones NO contribuye a cumplir con nuestra mega institucional:',
       options: [
-        'Hawaiiana', // 0
-        'Pollo con champiñones', // 1
-        'Margarita', // 2
-        'Marrano'  // 3
+        'La significativa contribución al forta­lecimiento de la salud poblacional en Colombia.', // 0
+        ' El profundo sentido de pertenencia de sus colaboradores, quienes mani­fiestan satisfacción superior con las oportunidades de desarrollo perso­nal y profesional.', // 1
+        'Ser el hospital más grande de Bogotá. (incorrecta esta no es una mega) ' // 2
+        
       ],
       answer: 2
     }
@@ -220,14 +247,14 @@ FriendlyGame.prototype.showQuestion = function(questions, questions_indexes) {
   // remove one random index
   var index = questions_indexes.splice(
     this.randomIntFromInterval(0, questions_indexes.length - 1),
-    1
+    1 
   )[0];
   var question = questions[index];
   var answer_indexes = [0, 1, 2, 3];
   document.querySelectorAll('.option').forEach(function(el, key) {
     var answer_value = answer_indexes.splice(
-      that.randomIntFromInterval(0, answer_indexes.length - 1),
-      1
+      that.randomIntFromInterval(0, answer_indexes.length - 1), 
+      1 
     )[0];
     el.dataset.answer = answer_value;
     el.textContent = question.options[answer_value];
@@ -266,7 +293,7 @@ FriendlyGame.prototype.showResults = function () {
         if (change.type === 'added' || change.type === 'modified') {
           if (change.doc.data().score >= 0) {
             var node = document.createElement("LI");
-            var textnode = document.createTextNode('> ' + change.doc.data().cc + ', ' + change.doc.data().name + ', ' + change.doc.data().score);
+            var textnode = document.createTextNode('> ' + change.doc.data().cc + ', ' + /*  change.doc.data().name + ', '  + */ change.doc.data().score);
             node.appendChild(textnode);  
             resultsListEl.appendChild(node);
           }
