@@ -32,11 +32,17 @@ FriendlyGame.prototype.initRouter = function() {
   this.router
     .on({
       '/': function() {
+        // Esta es la ruta en la que se muestra el formulario de inscripción.
+        // La sección que se renderiza es div#login
         that.setupLogin();
       }
     })
     .on({
       '/prueba': function() {
+        // Una vez se han inscrito los jugadores, se cambia a esta ruta y se
+        // renderiza la sección de las preguntas: div#gui
+        // En esta misma ruta se renderiza div#score, pero eso se controla
+        // desde scripts/FriendlyGame.View.js
         var members_with_id = 0;
         that.team.forEach(function (member) {
           if (member.uid) {
@@ -53,6 +59,8 @@ FriendlyGame.prototype.initRouter = function() {
     })
     .on({
       '/resultados': function() {
+        // En esta ruta se muestran los resultados de las pruebas.
+        // La sección que se renderiza es: div#results
         that.showResults();
       }
     })
@@ -66,7 +74,6 @@ FriendlyGame.prototype.getFirebaseConfig = function() {
 FriendlyGame.prototype.randomIntFromInterval = function(min, max) {
   return Math.floor(Math.random() * (max - min + 1) + min);
 }
-
 
 window.onload = function() {
   window.app = new FriendlyGame();

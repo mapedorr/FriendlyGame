@@ -1,8 +1,13 @@
+/**
+ * Aquí se controla el formulario en el que se ponen las cédulas y los nombres.
+ * Las operaciones con la base de datos no ocurren aquí sino en scripts/FriendlyGame.Data.js.
+ */
 FriendlyGame.prototype.setupLogin = function() {
   var that = this;
   var loginEl = document.querySelector('#login')
   var initTestEl = document.querySelector('#init-test')
 
+  // se limpian los campos del formulario de inscripción
   loginEl.setAttribute('class', '');
   document.querySelectorAll('.login-user').forEach(function (el) {
     var inputs = el.querySelectorAll('.login-input');
@@ -10,30 +15,14 @@ FriendlyGame.prototype.setupLogin = function() {
     inputs[1].value = '';
   });
 
+  // se asigna el escuchador del clic para el botón que da inicio a la prueba
   initTestEl.addEventListener('click', function() {
-    // check if there's a name or CC without pair
     var incomplete_form = false;
     var wrong_cc = false;
     var ready_users = 0;
-    var check_user = function (index) {
-      // check if the player id is already in the database
-      that.getUser(that.team[index], function (uid, score) {
-        // store the data from the database
-        that.team[ready_users].uid = uid;
-        if (score) {
-          that.team[ready_users].score = score;
-        }
 
-        if (ready_users == that.team.length - 1) {
-          that.gotoTest(loginEl);
-        }
-        else {
-          check_user(++ready_users);
-        }
-      });
-    };
-
-    // fill the array of team members
+    // aquí se llena un arreglo con objetos que van a guardar temporalmente
+    // los datos de cada jugador
     document.querySelectorAll('.login-user').forEach(function (el) {
       var inputs = el.querySelectorAll('.login-input');
       if (inputs[0].value && inputs[1].value) {
@@ -44,6 +33,7 @@ FriendlyGame.prototype.setupLogin = function() {
       }
     });
 
+    // se verifica que cada jugador haya puesto su nombre y un número de cédula
     that.team.forEach(function (member) {
       if (member.name || member.cc) {
         if (!member.name || !member.cc) {
@@ -52,11 +42,14 @@ FriendlyGame.prototype.setupLogin = function() {
       }
     });
 
+    // si alguno de los campos está incompleto, se muestra esta mierda
     if (incomplete_form) {
       alert('Cada jugador tiene que ingresar nombre y C.C. para poder continuar con la prueba');
       return;
     }
 
+    // se verifica que en el campo cédula hayan metido números y que sean de
+    // 7 a 10 dígitos
     that.team.forEach(function (member) {
       var int_val = parseInt(member.cc);
       if (isNaN(int_val)) {
@@ -66,14 +59,43 @@ FriendlyGame.prototype.setupLogin = function() {
       }
     });
 
-    // check if the CC is correct
+    // si alguna cédula está mal, se muestra esta mierda
     if (wrong_cc) {
       alert('Hay un número de C.C. incorrecto');
       return;
     }
 
-    // check if each user is already in the database or if it should be created
-    check_user(ready_users);
+    // se llama al método que va a verificar que cada cédula se cree en la
+    // base de datos
+    that.check_user(ready_users, loginEl);
+  });
+};
+
+/**
+ * en la base de datos se consulta primero si alguna de las cédulas usadas
+ * ya existe, de ser así, no se vuelve a crear un registro sino que se usa
+ * el que esté allá guardado.
+ */
+FriendlyGame.prototype.check_user = function (index, loginEl) {
+  var that = this;
+
+  // se llama al método que verifica si la cédula de uno de los campos ya está
+  // en la base de datos. El código con eso lógica está en scripts/FriendlyGame.Data.js.
+  this.getUser(that.team[index], function (uid, score) {
+    that.team[index].uid = uid;
+    if (score) {
+      that.team[index].score = score;
+    }
+
+    if (index == that.team.length - 1) {
+      // aquí se asume que se han creado o cargado todos los usuarios que
+      // llenaron el formulario, así que se cambia la ruta de la página
+      // para que vaya a /prueba
+      that.gotoTest(loginEl);
+    }
+    else {
+      that.check_user(++index, loginEl);
+    }
   });
 };
 
@@ -82,6 +104,11 @@ FriendlyGame.prototype.gotoTest = function(loginEl) {
   this.router.navigate('/prueba');
 };
 
+/**
+ * Aquí está la lógica que muestra las preguntas y las opciones de respuesta.
+ * La cosa selecciona una pregunta de forma aleatoria y organiza las opciones
+ * de forma aleatoria también.
+ */
 FriendlyGame.prototype.setupGame = function() {
   var that = this;
   var currentQuestion = 0;
@@ -123,16 +150,22 @@ FriendlyGame.prototype.setupGame = function() {
   var members_with_score = 0;
   var current_answer = -1;
   var available_questions = [];
+
+  // se llena un arreglo con las posiciones de cada pregunta para luego ir
+  // sacando una aleatoria
   questions.forEach(function (question, index) {
     available_questions.push(index);
   });
 
-  // check if all team members have a score
   this.team.forEach(function (member) {
     if (member.score >= 0) {
       members_with_score++;
     }
   });
+
+  // aquí se verifica que los jugadores ya tengan un puntaje.
+  // si todos tienen, entonces no se muestran las preguntas sino el mensaje
+  // con el resultado. eso es lo que se ve en div#score
   if (members_with_score == this.team.length && that.score >= 0) {
     guiEl.setAttribute('class', 'hidden');
     document.querySelector('#score').setAttribute('class', '');
@@ -140,7 +173,9 @@ FriendlyGame.prototype.setupGame = function() {
     return;
   }
 
-  // register the event that will register the selection of each option
+  // aquí se controla lo que pasa cuando se selecciona una opción para la pregunta.
+  // lo que hace es que le cambia el estilo a todas para que queden como no
+  // seleccionadas y luego se le pone una clase a la que se seleccionó.
   document.querySelectorAll('.option').forEach(function(el, key) {
     el.addEventListener('click', function () {
       that.deselectAll();
@@ -150,24 +185,36 @@ FriendlyGame.prototype.setupGame = function() {
     });
   });
 
+  // aquí es cuando se hace clic para pasar a la siguiente pregunta
+  // el puntaje se va guardando en una variable temporal y sólo aumenta si
+  // la respuesta fue correcta
   nextEl.addEventListener('click', function () {
     if (current_answer === questions[currentQuestion].answer) {
       score += 1;
     }
 
     if (available_questions.length > 0) {
+      // si aún quedan preguntas, se llama al método que escoje una aleatoria
+      // y la muestra en pantalla
       currentQuestion = that.showQuestion(questions, available_questions);
     }
     else {
-      // test finished, store the score
+      // una vez respuestas todas las preguntas, se guarda eso en la base de
+      // datos.
       that.saveScore(score);
     }
   });
 
+  // se llama a la función que escoje una pregunta aleatoria y que organiza
+  // aleatoriamente las opciones de respuesta
   currentQuestion = this.showQuestion(questions, available_questions);
   guiEl.setAttribute('class', '');
 };
 
+/**
+ * Este es el método que va mostrando una a una las preguntas. Lo que hace
+ * es que selecciona una aleatoriamente y desorganiza sus opciones de respuesta.
+ */
 FriendlyGame.prototype.showQuestion = function(questions, questions_indexes) {
   var that = this;
   // remove one random index
@@ -196,6 +243,12 @@ FriendlyGame.prototype.deselectAll = function() {
   });
 };
 
+/**
+ * Esto es lo que muestra los resultados de las pruebas cuando se navega a la
+ * ruta /resultados.
+ * Básicamente llena una <ul> con elementos <li> por cada registro encontrado
+ * en la base de datos.
+ */
 FriendlyGame.prototype.showResults = function () {
   var that = this;
   var resultsEl = document.querySelector('#results');
