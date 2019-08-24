@@ -7,8 +7,8 @@ function FriendlyGame() { // eslint-disable-line no-redeclare
   this.filters = {
     sort: 'id'
   };
-  this.uid = null;
-  this.score = 0;
+  this.team = [];
+  this.score = undefined;
 
   firebase.firestore().clearPersistence()
     .then(function() {
@@ -37,7 +37,14 @@ FriendlyGame.prototype.initRouter = function() {
     })
     .on({
       '/prueba': function() {
-        if (!that.uid) {
+        var members_with_id = 0;
+        that.team.forEach(function (member) {
+          if (member.uid) {
+            members_with_id += 1;
+          }
+        });
+        if (that.team.length === 0 || members_with_id != that.team.length) {
+          alert('No hay suficientes miembros en el equipo.');
           that.router.navigate('/');
           return;
         }
@@ -55,6 +62,11 @@ FriendlyGame.prototype.initRouter = function() {
 FriendlyGame.prototype.getFirebaseConfig = function() {
   return firebase.app().options;
 };
+
+FriendlyGame.prototype.randomIntFromInterval = function(min, max) {
+  return Math.floor(Math.random() * (max - min + 1) + min);
+}
+
 
 window.onload = function() {
   window.app = new FriendlyGame();

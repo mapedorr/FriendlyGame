@@ -10,19 +10,43 @@
 <body>
 <div>
   <div class="hidden" id="login">
-    <label for="player-name">Nombre:</label>
-    <input id="player-name" type="text">
-    <label for="player-id">C.C.:</label>
-    <input id="player-id" type="text">
+    <div class="login-user" id="user-1">
+      <label class="login-label">Nombre j1:</label>
+      <input class="login-input" type="text">
+      <label class="login-label">C.C. j1:</label>
+      <input class="login-input" type="text">
+    </div>
+
+    <div class="login-user" id="user-2">
+      <label class="login-label">Nombre j2:</label>
+      <input class="login-input" type="text">
+      <label class="login-label">C.C. j2:</label>
+      <input class="login-input" type="text">
+    </div>
+
+    <div class="login-user" id="user-3">
+      <label class="login-label">Nombre j3:</label>
+      <input class="login-input" type="text">
+      <label class="login-label">C.C. j3:</label>
+      <input class="login-input" type="text">
+    </div>
+
+    <div class="login-user" id="user-4">
+      <label class="login-label">Nombre j4:</label>
+      <input class="login-input" type="text">
+      <label class="login-label">C.C. j4:</label>
+      <input class="login-input" type="text">
+    </div>
+
     <button id="init-test" type="button">Iniciar prueba</button>
   </div>
 
   <div class="hidden" id="gui">
     <h1 id='question'></h1>
-    <button class="option" id="op-a" type="button">A</button>
-    <button class="option" id="op-b" type="button">B</button>
-    <button class="option" id="op-c" type="button">C</button>
-    <button class="option" id="op-d" type="button">D</button>
+    <button class="option" id="op-a" type="button"></button>
+    <button class="option" id="op-b" type="button"></button>
+    <button class="option" id="op-c" type="button"></button>
+    <button class="option" id="op-d" type="button"></button>
     <button disabled id="next" type="button">Siguiente</button>
   </div>
 
@@ -46,6 +70,7 @@
 <script src="//unpkg.com/navigo@6"></script>
 <!-- import project's scripts -->
 <script src="/scripts/FriendlyGame.js"></script>
+<script src="/scripts/FriendlyGame.Data.js"></script>
 <script src="/scripts/FriendlyGame.View.js"></script>
 </body>
 </html>
