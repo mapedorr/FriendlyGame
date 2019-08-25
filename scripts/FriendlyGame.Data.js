@@ -12,7 +12,7 @@ FriendlyGame.prototype.getUser = function(data, callback) {
       }
 
       snapshot.docChanges().forEach(function (result) {
-        callback(result.doc.id, result.doc.data().score);
+        callback(result.doc.id, result.doc.data().score, result.doc.data().results);
       });
     });
 };
@@ -37,8 +37,15 @@ FriendlyGame.prototype.saveScore = function (_score) {
   this.team.forEach(function (member) {
     var documentRef = collectionRef.doc(member.uid);
     if (!member.score) {
-      // store the score of the team member only if her hasn't one
-      promises.push(documentRef.set({score: _score}, {merge: true}));
+      // store the score of the player only if her hasn't one
+      var player_data = {
+        score: _score,
+        results: []
+      };
+      that.team_answers.forEach(function (data, index) {
+        player_data.results.push('p' + (index + 1) + ': ' + data.r);
+      });
+      promises.push(documentRef.set(player_data, {merge: true}));
     }
   });
 

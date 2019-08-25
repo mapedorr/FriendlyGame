@@ -141,3 +141,13 @@ hr{border:1px solid white !important;}
 .contenedor-pregunta h1{
   color: #00154A;
 }
+
+#respuestas {
+  list-style: none;
+}
+
+#respuestas #resp-template {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 64px;
+}

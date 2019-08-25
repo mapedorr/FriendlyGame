@@ -130,7 +130,7 @@ FriendlyGame.prototype.setupGame = function() {
         'Ser una organización que sirve a pacientes y estudiantes.', // 1
         'Más y mejor salud.', // 2
       ],
-      answer: 1
+      answer: 0
     },
     {
       text: '2. Visión: Al ____ la Fundación Santa Fe de Bogotá habrá generado más y mejor salud para Colombia y la región.',
@@ -139,7 +139,7 @@ FriendlyGame.prototype.setupGame = function() {
         '2040', // 1
         '2050 (correcta)' // 2
       ],
-      answer: 3
+      answer: 2
     },
     {
       text: '03. MÁS y MEJOR salud para Colombia y la región, es nuestra:',
@@ -148,31 +148,32 @@ FriendlyGame.prototype.setupGame = function() {
         'Mega Institucional (correcta)', // 1
         'Filosofía de servicio' // 2
       ],
-      answer: 2
+      answer: 1
     },
     {
-      text: '4.Cuál de las siguientes opciones NO contribuye a cumplir con nuestra mega institucional:',
+      text: '4. Cuál de las siguientes opciones NO contribuye a cumplir con nuestra mega institucional:',
       options: [
         'La entrega sistemática de desenlaces superiores, superando los más exi­gentes estándares internacionales en la atención y el cuidado continuo de la persona, su familia y cuidadores. ', // 0
         'El desarrollo de nuevos medicamentos para la población.', // 1
         'El alto nivel científico de su práctica reflejada en investigaciones de im­pacto divulgadas a través de publi­caciones en revistas indexadas.', // 2
         'La educación de profesionales de la salud que contribuyen con resulta­dos sobresalientes a mejorar la sa­lud y los servicios de atención en la FSFB, el país y la región.'
       ],
-      answer: 2
+      answer: 1
     },
     {
-      text: '5.Cuál de las siguientes opciones NO contribuye a cumplir con nuestra mega institucional:',
+      text: '5. Cuál de las siguientes opciones NO contribuye a cumplir con nuestra mega institucional:',
       options: [
         'La significativa contribución al forta­lecimiento de la salud poblacional en Colombia.', // 0
-        ' El profundo sentido de pertenencia de sus colaboradores, quienes mani­fiestan satisfacción superior con las oportunidades de desarrollo perso­nal y profesional.', // 1
+        'El profundo sentido de pertenencia de sus colaboradores, quienes mani­fiestan satisfacción superior con las oportunidades de desarrollo perso­nal y profesional.', // 1
         'Ser el hospital más grande de Bogotá. (incorrecta esta no es una mega) ' // 2
-        
       ],
-      answer: 2
+      answer: 1
     }
   ]
   var guiEl = document.querySelector('#gui');
   var nextEl = document.querySelector('#next');
+  var respuestasEl = document.querySelector('#respuestas');
+  var respTemplateEl = document.querySelector('#resp-template');
   var score = 0;
   var members_with_score = 0;
   var current_answer = -1;
@@ -197,6 +198,17 @@ FriendlyGame.prototype.setupGame = function() {
     guiEl.setAttribute('class', 'hidden');
     document.querySelector('#score').setAttribute('class', '');
     document.querySelector('#score_value').textContent = that.score;
+
+    // renderizar las preguntas y respuestas de los jugadores
+    this.team_answers.forEach(function (data) {
+      var newEl = respTemplateEl.cloneNode(true);
+      newEl.classList.remove('hidden');
+      newEl.querySelector('#q').textContent = data.q;
+      newEl.querySelector('#a').textContent = data.a;
+      newEl.querySelector('#r').textContent = (parseInt(data.r) > 0) ? 'correcto' : 'incorrecto';
+      respuestasEl.appendChild(newEl);
+    });
+
     return;
   }
 
@@ -218,6 +230,7 @@ FriendlyGame.prototype.setupGame = function() {
   nextEl.addEventListener('click', function () {
     if (current_answer === questions[currentQuestion].answer) {
       score += 1;
+      that.team_answers[currentQuestion].r = 1;
     }
 
     if (available_questions.length > 0) {
@@ -244,23 +257,58 @@ FriendlyGame.prototype.setupGame = function() {
  */
 FriendlyGame.prototype.showQuestion = function(questions, questions_indexes) {
   var that = this;
-  // remove one random index
-  var index = questions_indexes.splice(
-    this.randomIntFromInterval(0, questions_indexes.length - 1),
-    1 
-  )[0];
-  var question = questions[index];
-  var answer_indexes = [0, 1, 2, 3];
-  document.querySelectorAll('.option').forEach(function(el, key) {
-    var answer_value = answer_indexes.splice(
-      that.randomIntFromInterval(0, answer_indexes.length - 1), 
+  var index = 0;
+  var question = [];
+  var answer_indexes = [];
+  var optionEls = document.querySelectorAll('.option');
+
+  if (this.random_questions) {
+    // se toma una pregunta aleatoria
+    index = questions_indexes.splice(
+      this.randomIntFromInterval(0, questions_indexes.length - 1),
       1 
     )[0];
-    el.dataset.answer = answer_value;
-    el.textContent = question.options[answer_value];
+  }
+  else {
+    index = questions_indexes.shift();
+  }
+  question = questions[index];
+
+  this.team_answers[index] = {
+    q: question.text,
+    a: question.options[question.answer],
+    r: 0
+  };
+
+  // se llena un arreglo con las posiciones de cada respuesta para luego ir
+  // sacando una aleatoria
+  question.options.forEach(function (option, index) {
+    answer_indexes.push(index);
   });
+
+  // ocultar todos los <option> para que sólo se muestren los que quedan con una
+  // opción de respuesta
+  optionEls.forEach(function(el) { el.classList.add('hidden'); });
+
+  // asignar la respuesta que tendrá cada opción
+  document.querySelectorAll('.option').forEach(function(el, key) {
+    if (answer_indexes.length > 0) {
+      var answer_value = answer_indexes.splice(
+        that.randomIntFromInterval(0, answer_indexes.length - 1), 
+        1 
+      )[0];
+      el.dataset.answer = answer_value;
+      el.textContent = question.options[answer_value];
+      el.classList.remove('hidden');
+    }
+  });
+
+  // poner el texto de la pregunta en pantalla
   document.querySelector('#question').textContent = question.text;
+
+  // deseleccionar todas las opciones
   this.deselectAll();
+
   return index;
 };
 
@@ -293,7 +341,11 @@ FriendlyGame.prototype.showResults = function () {
         if (change.type === 'added' || change.type === 'modified') {
           if (change.doc.data().score >= 0) {
             var node = document.createElement("LI");
-            var textnode = document.createTextNode('> ' + change.doc.data().cc + ', ' + /*  change.doc.data().name + ', '  + */ change.doc.data().score);
+            var result_text = 'Código: ' + change.doc.data().cc;
+            change.doc.data().results.forEach(function (result) {
+              result_text += ', ' + result
+            });
+            var textnode = document.createTextNode(result_text);
             node.appendChild(textnode);  
             resultsListEl.appendChild(node);
           }

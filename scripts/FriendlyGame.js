@@ -9,6 +9,8 @@ function FriendlyGame() { // eslint-disable-line no-redeclare
   };
   this.team = [];
   this.score = undefined;
+  this.team_answers = [];
+  this.random_questions = true;
 
   firebase.firestore().clearPersistence()
     .then(function() {
