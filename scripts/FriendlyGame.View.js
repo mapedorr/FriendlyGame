@@ -78,7 +78,7 @@ FriendlyGame.prototype.setupLogin = function() {
     // se llama al método que va a verificar que cada cédula se cree en la
     // base de datos
     that.check_user(ready_users, loginEl);
-  });
+  }, { once: true });
 };
 
 /**
@@ -95,6 +95,7 @@ FriendlyGame.prototype.check_user = function (index, loginEl) {
     that.team[index].uid = uid;
     if (score) {
       that.team[index].score = score;
+      that.team[index].repeating = true;
     }
 
     if (index == that.team.length - 1) {
@@ -104,12 +105,31 @@ FriendlyGame.prototype.check_user = function (index, loginEl) {
       that.gotoTest(loginEl);
     }
     else {
-      that.check_user(++index, loginEl);
+      that.check_user(index + 1, loginEl);
     }
   });
 };
 
 FriendlyGame.prototype.gotoTest = function(loginEl) {
+  // antes de que se muestre la prueba, eliminar del equipo a cualquier jugador
+  // que ya la haya presentado
+  var that = this;
+  var members_with_score = 0;
+  var digitalKeyboardEl = document.querySelector('.fuzy-numKey-active');
+
+  if (digitalKeyboardEl) {
+    digitalKeyboardEl.click();
+  }
+
+  this.team.forEach(function (member, index) {
+    if (member.remove) {
+      members_with_score++;
+    }
+  });
+  if (members_with_score > 0) {
+    alert('Si un jugador ya presentó la prueba, no se le tendrá en cuenta esta.');
+  }
+
   loginEl.setAttribute('class', 'hidden');
   this.router.navigate('/prueba');
 };
@@ -124,34 +144,34 @@ FriendlyGame.prototype.setupGame = function() {
   var currentQuestion = 0;
   var questions = [
     {
-      text: '01. Nuestra misión',
+      text: 'Nuestra misión',
       options: [
-        'Liderar e influir positivamente en el sector salud para contribuir al bienestar de individuos y comunidades. (correcta)', // 0
+        'Liderar e influir positivamente en el sector salud para contribuir al bienestar de individuos y comunidades.', // 0
         'Ser una organización que sirve a pacientes y estudiantes.', // 1
         'Más y mejor salud.', // 2
       ],
       answer: 0
     },
     {
-      text: '2. Visión: Al ____ la Fundación Santa Fe de Bogotá habrá generado más y mejor salud para Colombia y la región.',
+      text: 'Visión: Al ____ la Fundación Santa Fe de Bogotá habrá generado más y mejor salud para Colombia y la región.',
       options: [
         '2025', // 0
         '2040', // 1
-        '2050 (correcta)' // 2
+        '2050' // 2
       ],
       answer: 2
     },
     {
-      text: '03. MÁS y MEJOR salud para Colombia y la región, es nuestra:',
+      text: 'MÁS y MEJOR salud para Colombia y la región, es nuestra:',
       options: [
         'Visión', // 0
-        'Mega Institucional (correcta)', // 1
+        'Mega Institucional', // 1
         'Filosofía de servicio' // 2
       ],
       answer: 1
     },
     {
-      text: '4. Cuál de las siguientes opciones NO contribuye a cumplir con nuestra mega institucional:',
+      text: 'Cuál de las siguientes opciones NO contribuye a cumplir con nuestra mega institucional:',
       options: [
         'La entrega sistemática de desenlaces superiores, superando los más exi­gentes estándares internacionales en la atención y el cuidado continuo de la persona, su familia y cuidadores. ', // 0
         'El desarrollo de nuevos medicamentos para la población.', // 1
@@ -161,23 +181,25 @@ FriendlyGame.prototype.setupGame = function() {
       answer: 1
     },
     {
-      text: '5. Cuál de las siguientes opciones NO contribuye a cumplir con nuestra mega institucional:',
+      text: 'Cuál de las siguientes opciones NO contribuye a cumplir con nuestra mega institucional:',
       options: [
         'La significativa contribución al forta­lecimiento de la salud poblacional en Colombia.', // 0
         'El profundo sentido de pertenencia de sus colaboradores, quienes mani­fiestan satisfacción superior con las oportunidades de desarrollo perso­nal y profesional.', // 1
-        'Ser el hospital más grande de Bogotá. (incorrecta esta no es una mega) ' // 2
+        'Ser el hospital más grande de Bogotá.' // 2
       ],
       answer: 1
     }
   ]
   var guiEl = document.querySelector('#gui');
   var nextEl = document.querySelector('#next');
+  var scoreEl = document.querySelector('#score');
   var respuestasEl = document.querySelector('#respuestas');
   var respTemplateEl = document.querySelector('#resp-template');
   var score = 0;
   var members_with_score = 0;
   var current_answer = -1;
   var available_questions = [];
+  var members_repeating = 0;
 
   // se llena un arreglo con las posiciones de cada pregunta para luego ir
   // sacando una aleatoria
@@ -189,14 +211,29 @@ FriendlyGame.prototype.setupGame = function() {
     if (member.score >= 0) {
       members_with_score++;
     }
+
+    if (member.repeating) {
+      members_repeating++;
+    }
   });
+
+  if (members_repeating === this.team.length) {
+    alert('Este equipo ya presentó la prueba.');
+    this.router.navigate('/');
+    return;
+  }
 
   // aquí se verifica que los jugadores ya tengan un puntaje.
   // si todos tienen, entonces no se muestran las preguntas sino el mensaje
   // con el resultado. eso es lo que se ve en div#score
   if (members_with_score == this.team.length && that.score >= 0) {
+    that.end_shown = true;
+
     guiEl.setAttribute('class', 'hidden');
-    document.querySelector('#score').setAttribute('class', '');
+    scoreEl.classList.remove('hidden');
+    while (respuestasEl.firstChild) {
+      respuestasEl.removeChild(respuestasEl.firstChild);
+    }
     document.querySelector('#score_value').textContent = that.score;
 
     // renderizar las preguntas y respuestas de los jugadores

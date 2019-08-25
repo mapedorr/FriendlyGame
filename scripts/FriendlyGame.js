@@ -4,14 +4,6 @@
 function FriendlyGame() { // eslint-disable-line no-redeclare
   var that = this;
 
-  this.filters = {
-    sort: 'id'
-  };
-  this.team = [];
-  this.score = undefined;
-  this.team_answers = [];
-  this.random_questions = true;
-
   firebase.firestore().clearPersistence()
     .then(function() {
       return firebase.auth().signInAnonymously();
@@ -36,6 +28,7 @@ FriendlyGame.prototype.initRouter = function() {
       '/': function() {
         // Esta es la ruta en la que se muestra el formulario de inscripción.
         // La sección que se renderiza es div#login
+        that.initGame();
         that.setupLogin();
       }
     })
@@ -46,6 +39,13 @@ FriendlyGame.prototype.initRouter = function() {
         // En esta misma ruta se renderiza div#score, pero eso se controla
         // desde scripts/FriendlyGame.View.js
         var members_with_id = 0;
+
+        if (that.end_shown === true || !that.team) {
+          // that.router.navigate('/');
+          location.replace('/');
+          return;
+        }
+
         that.team.forEach(function (member) {
           if (member.uid) {
             members_with_id += 1;
@@ -76,6 +76,22 @@ FriendlyGame.prototype.getFirebaseConfig = function() {
 FriendlyGame.prototype.randomIntFromInterval = function(min, max) {
   return Math.floor(Math.random() * (max - min + 1) + min);
 }
+
+FriendlyGame.prototype.initGame = function() {
+  var respuestasEl = document.querySelector('#respuestas');
+  
+  this.team = [];
+  this.score = undefined;
+  this.team_answers = [];
+  this.random_questions = true;
+  this.end_shown = false;
+
+  while (respuestasEl.firstChild) {
+    respuestasEl.removeChild(respuestasEl.firstChild);
+  }
+  document.querySelector('#gui').classList.add('hidden');
+  document.querySelector('#score').classList.add('hidden');
+};
 
 window.onload = function() {
   window.app = new FriendlyGame();
