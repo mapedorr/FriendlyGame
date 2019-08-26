@@ -17,7 +17,7 @@ body {
 #question{
 
   	font-family: 'Lato', sans-serif;
-  	font-weight: 300;
+  	font-weight: 900;
 	font-size: 1.2em;
 	position: absolute;
      top: 50%;
@@ -34,16 +34,35 @@ body {
   border: 1px solid white;
   width: 100%;
   margin: 10px;
+  font-size: 0.9em;
+  transition: all 0.2s;
+}
 
+.option:hover{
+  transition: all 0.3s;
+  background: rgba(255,255,255, 0.9);
+  color: #01154F;
 }
 
 .option.selected {
-  background: #ff7777;
+	opacity: 0.7;
+	background: white;
+	color: #01154F;
+	border: 1px solid  #01154F;
 }
 
 #login{
   background:url(../imgs/bg-login.jpg);
   background-size: cover;
+  height: 100%;
+}
+
+
+#score{
+
+  background:url(../imgs/bg-preguntas.jpg);
+  background-size: cover;
+  background-attachment: fixed;
   height: 100%;
 }
 
@@ -71,6 +90,20 @@ body {
 .contenedor-login p{
   margin: 0px;
 }
+.contenedor-question{
+	padding: 40px 190px 40px 40px;
+
+     position: relative;
+     top: 50%;
+     transform: perspective(1px) translateY(-50%);
+}
+.contenedor-2{
+	padding: 40px 190px 40px 40px;
+
+     position: fixed;
+     top: 50%;
+     transform: perspective(1px) translateY(-50%);
+}
 
 button{
   font-family: 'Lato', sans-serif;
@@ -78,7 +111,7 @@ button{
   font-size: 1em;
   color: white;
   border-radius: 25px;
-  border:3px solid rgba(161, 210, 63, 0.4);
+  border:3px solid rgba(161, 210, 63, 1);
   padding: 10px 30px;
 
 
@@ -94,8 +127,15 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#a1d23f', end
 
 margin:35px 0px 0px 0px;
 
+transition: 0.3s all;
 
 }
+
+button:hover{
+	transition: all 0.3s;
+	opacity: 0.8;
+}
+
 
 
 hr{border:1px solid white !important;}
@@ -155,10 +195,21 @@ hr{border:1px solid white !important;}
 
 #respuestas {
   list-style: none;
+  font-size: 0.6em;
 }
 
 #respuestas #resp-template {
   display: flex;
   flex-direction: column;
-  margin-bottom: 64px;
+  margin-bottom: 15px;
+  padding: 14px;
+	background: rgba(37,55,134, 0.95);
+	border-radius: 15px;
+}
+
+
+@media only screen and (max-width: 1280px) {
+  body {
+    font-size: 0.8em;
+  }
 }

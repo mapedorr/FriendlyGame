@@ -83,7 +83,7 @@ FriendlyGame.prototype.initGame = function() {
   this.team = [];
   this.score = undefined;
   this.team_answers = [];
-  this.random_questions = true;
+  this.random_questions = false;
   this.end_shown = false;
 
   while (respuestasEl.firstChild) {

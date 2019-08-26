@@ -71,7 +71,7 @@
   <div class="hidden" id="gui">
     <div class="contenedor-pregunta">
       <div style="flex: 1;">
-        <div style="padding: 40px 150px 40px 40px;">
+        <div style="" class="contenedor-question">
         <h1 id='question'></h1>
         </div>
       </div>
@@ -87,17 +87,44 @@
   </div>
 
   <div class="hidden" id="score">
-    <center>
-      <h1>Gracias por presentar la prueba</h1>
-      <h3>Respondiste:<span id="score_value"></span> de 5 preguntas correctamente</h3>
-      <ul id="respuestas"></ul>
-      <!-- No borrar el siguiente elemento ni sus hijos -->
-      <li class="hidden" id="resp-template">
-        <strong>Pregunta: </strong><span id="q"></span>
-        <strong>Respuesta correcta: </strong><span id="a"></span>
-        <strong>Resultado: </strong><span id="r"></span>
-      </li>
-    </center>
+    
+
+        <div style="" class="contenedor-2">
+          <h2 style="width: 400px; color: #1b79d1;">Gracias por presentar la prueba</h2>
+
+          <button onclick="location.reload();">Volver al inicio</button>
+        </div>
+
+    <div style="display: flex;">
+      
+      <div style="flex: 1;">
+
+
+      </div>
+
+      <div style="flex: 1; color: white; overflow: hidden;">
+        <div style="overflow: scroll; padding: 40px">
+        <center>
+          <h3>Respondiste: <span id="score_value"></span> de 5 preguntas correctamente</h3>
+          <ul id="respuestas"></ul>
+          <!-- No borrar el siguiente elemento ni sus hijos -->
+          <div class="hidden" id="resp-template">
+          <div style="display: flex;">
+                <div style="flex: 2;">
+                  <strong>Pregunta: </strong><span id="q"></span>
+                  <hr>
+                  <strong>Respuesta correcta: </strong><span id="a"></span>
+                </div>
+                <div style="flex: 1">
+                  <strong>Resultado: </strong><span id="r"></span>
+                </div>
+            </div>
+          </div>
+        </center>
+        </div>
+      </div>
+    </div>
+
   </div>
 
   <div class="hidden" id="results">

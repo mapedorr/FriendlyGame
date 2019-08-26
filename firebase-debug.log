@@ -1,25 +1,25 @@
-[debug] [2019-08-25T11:40:19.119Z] ----------------------------------------------------------------------
-[debug] [2019-08-25T11:40:19.121Z] Command:       C:\Program Files (x86)\nodejs\node.exe C:\Users\Mauricio\AppData\Roaming\npm\node_modules\firebase-tools\lib\bin\firebase.js serve
-[debug] [2019-08-25T11:40:19.121Z] CLI Version:   7.2.4
-[debug] [2019-08-25T11:40:19.121Z] Platform:      win32
-[debug] [2019-08-25T11:40:19.121Z] Node Version:  v8.11.3
-[debug] [2019-08-25T11:40:19.122Z] Time:          Sun Aug 25 2019 06:40:19 GMT-0500 (Hora est. Pacífico, Sudamérica)
-[debug] [2019-08-25T11:40:19.122Z] ----------------------------------------------------------------------
+[debug] [2019-08-26T12:25:16.542Z] ----------------------------------------------------------------------
+[debug] [2019-08-26T12:25:16.542Z] Command:       C:\Program Files (x86)\nodejs\node.exe C:\Users\Mauricio\AppData\Roaming\npm\node_modules\firebase-tools\lib\bin\firebase.js serve
+[debug] [2019-08-26T12:25:16.542Z] CLI Version:   7.2.4
+[debug] [2019-08-26T12:25:16.542Z] Platform:      win32
+[debug] [2019-08-26T12:25:16.542Z] Node Version:  v8.11.3
+[debug] [2019-08-26T12:25:16.557Z] Time:          Mon Aug 26 2019 07:25:16 GMT-0500 (Hora est. Pacífico, Sudamérica)
+[debug] [2019-08-26T12:25:16.557Z] ----------------------------------------------------------------------
 [debug] 
-[debug] [2019-08-25T11:40:19.133Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
-[debug] [2019-08-25T11:40:19.133Z] > authorizing via signed-in user
-[debug] [2019-08-25T11:40:19.133Z] [iam] checking project juego-01-d6fef for permissions ["firebase.projects.get"]
-[debug] [2019-08-25T11:40:19.135Z] >>> HTTP REQUEST POST https://cloudresourcemanager.googleapis.com/v1/projects/juego-01-d6fef:testIamPermissions  
+[debug] [2019-08-26T12:25:16.698Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2019-08-26T12:25:16.698Z] > authorizing via signed-in user
+[debug] [2019-08-26T12:25:16.698Z] [iam] checking project juego-01-d6fef for permissions ["firebase.projects.get"]
+[debug] [2019-08-26T12:25:16.698Z] >>> HTTP REQUEST POST https://cloudresourcemanager.googleapis.com/v1/projects/juego-01-d6fef:testIamPermissions  
 
-[debug] [2019-08-25T11:40:19.764Z] <<< HTTP RESPONSE 200
-[debug] [2019-08-25T11:40:19.766Z] >>> HTTP REQUEST GET https://firebase.googleapis.com/v1beta1/projects/juego-01-d6fef  
+[debug] [2019-08-26T12:25:17.339Z] <<< HTTP RESPONSE 200
+[debug] [2019-08-26T12:25:17.339Z] >>> HTTP REQUEST GET https://firebase.googleapis.com/v1beta1/projects/juego-01-d6fef  
  
-[debug] [2019-08-25T11:40:20.219Z] <<< HTTP RESPONSE 200
+[debug] [2019-08-26T12:25:17.682Z] <<< HTTP RESPONSE 200
 [info] 
 [info] === Serving from 'C:\Users\Mauricio\Desktop\juego\FriendlyGame'...
 [info] 
-[debug] [2019-08-25T11:40:20.221Z] >>> HTTP REQUEST GET https://firebase.googleapis.com/v1beta1/projects/juego-01-d6fef/webApps/-/config  
+[debug] [2019-08-26T12:25:17.682Z] >>> HTTP REQUEST GET https://firebase.googleapis.com/v1beta1/projects/juego-01-d6fef/webApps/-/config  
  
-[debug] [2019-08-25T11:40:20.673Z] <<< HTTP RESPONSE 200
+[debug] [2019-08-26T12:25:17.995Z] <<< HTTP RESPONSE 200
 [info] i  hosting: Serving hosting files from: ./
 [info] +  hosting: Local server: http://localhost:5000
